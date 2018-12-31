@@ -1,5 +1,3 @@
-# ─────────────────────────────────────────────────────────────────────────────
-# 매경 crawling ... (http://news.mk.co.kr/rss/rss.php)
 import pandas as pd
 import pymysql
 import requests
@@ -8,7 +6,7 @@ from bs4 import BeautifulSoup
 
 
 def crwl_mk_rss(ctgry, url):
-    print("매경을 긁습니다...")
+    print("매경 {0} 카테고리를 긁습니다...".format(ctgry))
     #url = 'http://file.mk.co.kr/news/rss/rss_30100041.xml'  # 매경경제
     
     r = requests.get(url)
@@ -17,13 +15,18 @@ def crwl_mk_rss(ctgry, url):
     links = soup.find_all('link')
     
     def crwl_mk_article(link):
-        r = requests.get(link)
-        s = BeautifulSoup(r.content, 'html.parser')
-        s.find_all('div', {'id':'article_body'})[0].find_all('div', {'class':'art_txt'})
-        artcl = s.find_all('div', {'class':'art_txt'})[0]
-        for i in artcl.find_all('div'): i.decompose()
-        for i in artcl.find_all('script'): i.decompose()
-        return artcl.text
+        try:
+            r = requests.get(link)
+            s = BeautifulSoup(r.content, 'html.parser')
+            s.find_all('div', {'id':'article_body'})[0].find_all('div', {'class':'art_txt'})
+            artcl = s.find_all('div', {'class':'art_txt'})[0]
+        except Exception as e:
+            print('[crwl_mk_article] error : ', e)    
+            return 'error crwling article...'
+        finally:
+            for i in artcl.find_all('div'): i.decompose()
+            for i in artcl.find_all('script'): i.decompose()
+            return artcl.text
     
     def df_to_aws(df, tbname):
         pymysql.install_as_MySQLdb()
