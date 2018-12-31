@@ -1,6 +1,7 @@
 import pandas as pd
 import pymysql
 import requests
+import sys
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
 
@@ -66,26 +67,30 @@ def crwl_mk_rss(ctgry, url):
 
     print("rss 추출이 완료되었습니다.")
 
+def main(argv):
+    mk_rss = {'헤드라인':'http://file.mk.co.kr/news/rss/rss_30000001.xml',
+              '전체뉴스':'http://file.mk.co.kr/news/rss/rss_40300001.xml',
+              '경제':'http://file.mk.co.kr/news/rss/rss_30100041.xml',
+              '정치':'http://file.mk.co.kr/news/rss/rss_30200030.xml',
+              '사회':'http://file.mk.co.kr/news/rss/rss_50400012.xml',
+              '국제':'http://file.mk.co.kr/news/rss/rss_30300018.xml',
+              '기업ㆍ경영':'http://file.mk.co.kr/news/rss/rss_50100032.xml',
+              '증권':'http://file.mk.co.kr/news/rss/rss_50200011.xml',
+              '부동산':'http://file.mk.co.kr/news/rss/rss_50300009.xml',
+              '문화ㆍ연예':'http://file.mk.co.kr/news/rss/rss_30000023.xml',
+              '패션':'http://file.mk.co.kr/news/rss/rss_72000001.xml',
+              '스포츠':'http://file.mk.co.kr/news/rss/rss_71000001.xml',
+              '게임':'http://file.mk.co.kr/news/rss/rss_50700001.xml',
+              '오피니언':'http://file.mk.co.kr/news/rss/rss_30500041.xml',
+              '특집-MBA':'http://file.mk.co.kr/news/rss/rss_40200124.xml',
+              '머니 앤 리치스':'http://file.mk.co.kr/news/rss/rss_40200003.xml',
+              '영문-Top Stories':'http://file.mk.co.kr/news/rss/rss_30800011.xml',
+              '이코노미':'http://file.mk.co.kr/news/rss/rss_50000001.xml',
+              '시티라이프':'http://file.mk.co.kr/news/rss/rss_60000007.xml'}
+    
+    for key in list(mk_rss.keys()):
+        crwl_mk_rss(key, mk_rss[key])
+        
 
-mk_rss = {'헤드라인':'http://file.mk.co.kr/news/rss/rss_30000001.xml',
-          '전체뉴스':'http://file.mk.co.kr/news/rss/rss_40300001.xml',
-          '경제':'http://file.mk.co.kr/news/rss/rss_30100041.xml',
-          '정치':'http://file.mk.co.kr/news/rss/rss_30200030.xml',
-          '사회':'http://file.mk.co.kr/news/rss/rss_50400012.xml',
-          '국제':'http://file.mk.co.kr/news/rss/rss_30300018.xml',
-          '기업ㆍ경영':'http://file.mk.co.kr/news/rss/rss_50100032.xml',
-          '증권':'http://file.mk.co.kr/news/rss/rss_50200011.xml',
-          '부동산':'http://file.mk.co.kr/news/rss/rss_50300009.xml',
-          '문화ㆍ연예':'http://file.mk.co.kr/news/rss/rss_30000023.xml',
-          '패션':'http://file.mk.co.kr/news/rss/rss_72000001.xml',
-          '스포츠':'http://file.mk.co.kr/news/rss/rss_71000001.xml',
-          '게임':'http://file.mk.co.kr/news/rss/rss_50700001.xml',
-          '오피니언':'http://file.mk.co.kr/news/rss/rss_30500041.xml',
-          '특집-MBA':'http://file.mk.co.kr/news/rss/rss_40200124.xml',
-          '머니 앤 리치스':'http://file.mk.co.kr/news/rss/rss_40200003.xml',
-          '영문-Top Stories':'http://file.mk.co.kr/news/rss/rss_30800011.xml',
-          '이코노미':'http://file.mk.co.kr/news/rss/rss_50000001.xml',
-          '시티라이프':'http://file.mk.co.kr/news/rss/rss_60000007.xml'}
-
-for key in list(mk_rss.keys()):
-    crwl_mk_rss(key, mk_rss[key])
+if __name__ == "__main__":
+    main(sys.argv[1:])
