@@ -23,7 +23,7 @@ def crwl_mk_rss(ctgry, url):
         except Exception as e:
             print('[crwl_mk_article] error : ', e)    
             return 'error crwling article...'
-        finally:
+        else:
             for i in artcl.find_all('div'): i.decompose()
             for i in artcl.find_all('script'): i.decompose()
             return artcl.text
